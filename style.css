@@ -75,7 +75,8 @@ header,main>header,.month-card,.events .map-button,.map-button,.music{backdrop-f
 .opening .photographic .gate-frame{transition:transform 3.4s ease .2s,opacity 1.8s ease 1.9s!important}
 .opening .photographic .ceremony{transition-duration:4.2s!important}
 /* ---- Journey map: the day's schedule as an illustrated, animated route ---- */
-.journey{max-width:860px;margin:6px auto 46px;background:linear-gradient(160deg,#fff8ef,#f3e7d4);border:1px solid #e0cdac;border-radius:28px;padding:20px 20px 10px;box-shadow:0 22px 55px #4a2a1a1a,inset 0 0 0 1px #fff6e6;position:relative;overflow:hidden}
+.journey{max-width:600px;margin:10px auto 46px;background:#fff8ef;border:1px solid #e6d3b4;border-radius:22px;box-shadow:0 22px 55px #4a2a1a22,inset 0 0 0 1px #fff6e6;position:relative;overflow:hidden}
+.journey-photo{width:100%;height:auto;display:block}
 .journey-map{width:100%;height:auto;display:block}
 .jm-terrain path{fill:none;stroke:#cdb188;stroke-width:1.2;opacity:.3}
 .jm-route{fill:none;stroke:#b1863f;stroke-width:3.4;stroke-linecap:round}
@@ -94,7 +95,7 @@ header,main>header,.month-card,.events .map-button,.map-button,.music{backdrop-f
 .jm-hit{fill:transparent}
 .jm-pin:hover .jm-drop,.jm-pin:focus-visible .jm-drop{fill:#7e2545}
 .jm-pin:hover .jm-drop{filter:drop-shadow(0 4px 7px #7a1f3a55)}
-.journey-note{text-align:center;font-family:'Noto Sans Georgian',sans-serif;font-size:11px;letter-spacing:1px;color:#9a7a57;margin:4px 0 8px}
+.journey-note{text-align:center;font-family:'Noto Sans Georgian',sans-serif;font-size:11px;letter-spacing:1px;color:#9a7a57;margin:0;padding:12px 16px}
 @media(max-width:650px){.journey{padding:14px 12px 6px;border-radius:20px}.jm-city{font-size:34px}.journey-note{font-size:10px}}
 /* ---- Scroll reveal: sections rise & fade in as they enter view ---- */
 .has-reveal .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
