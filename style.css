@@ -53,3 +53,15 @@ main{overflow-x:clip}
 /* Perf: the fixed music button repainted on every scroll frame because of its
    live backdrop-filter. Drop it; the semi-opaque background is enough. */
 .music{backdrop-filter:none}
+/* ---- Perf hardening for low-power devices (phones) ---- */
+/* 1. Give the animated gate panels and the scaling ceremony their own GPU
+      layer. Otherwise clip-path + 3D rotation gets re-rasterised every frame
+      on weaker GPUs, which is the main source of stutter during the opening. */
+.photographic .gate,.photographic .ceremony,.photographic .gate-frame{will-change:transform;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+/* 2. backdrop-filter recomputes a blur of everything behind the element on
+      every scroll frame. The backgrounds are already translucent, so drop the
+      live blur on every panel that uses it (desktop included). */
+header,main>header,.month-card,.events .map-button,.map-button,.music{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+/* 3. Lighten the full-screen intro backdrop blur on larger screens (it is
+      already removed under 700px and is mostly hidden behind the gate). */
+@media(min-width:701px){.intro:before{filter:blur(10px)}}
