@@ -130,11 +130,24 @@ $('#open').onclick = () => {
     clearTimeout(loadTimer); opening = true;
     $('#scene-caption').textContent = '';
     $('#intro').classList.add('opening');
-    captionTimer = setTimeout(() => $('#scene-caption').textContent = 'ჩვენი საერთო გზის დასაწყისი', reduced ? 10 : 3400);
-    introTimer = setTimeout(finish, reduced ? 350 : 9500);
+    captionTimer = setTimeout(() => $('#scene-caption').textContent = 'ჩვენი საერთო გზის დასაწყისი', reduced ? 10 : 1800);
+    if (reduced) {
+      introTimer = setTimeout(finish, 350);
+    } else {
+      // The entrance clip plays once and its own 'ended' event hands off to
+      // the invitation. This timer is only a safety fallback in case 'ended'
+      // never fires (e.g. a decode hiccup).
+      const dur = (entranceVideo.duration && isFinite(entranceVideo.duration)) ? entranceVideo.duration : 4;
+      introTimer = setTimeout(finish, dur * 1000 + 1500);
+    }
     syncVideo();
   }).catch(failed);
 };
+// The 4s entrance clip plays once; the moment it ends, move straight to the
+// invitation — a clean, elegant hand-off with no looping restarts.
+entranceVideo.addEventListener('ended', () => {
+  if (opening && !$('#intro').hidden) finish();
+});
 $('#skip').onclick = finish;
 $('#replay').onclick = () => {
   generation++; opening = false; clearIntroTimers();

@@ -69,3 +69,8 @@ header,main>header,.month-card,.events .map-button,.map-button,.music{backdrop-f
       HEVC video and load stalls, both fixed now. Keep only the cheap wins on
       phones: stop the perpetual vine sway. */
 @media(max-width:700px){.vine-leaves{animation:none}}
+/* Pace the gate opening to the ~4s entrance clip: the scene is fully revealed
+   by ~3.6s, then the video's own end hands off to the invitation. */
+.opening .photographic .gate{transition-duration:3s!important}
+.opening .photographic .gate-frame{transition:transform 3.4s ease .2s,opacity 1.8s ease 1.9s!important}
+.opening .photographic .ceremony{transition-duration:4.2s!important}
