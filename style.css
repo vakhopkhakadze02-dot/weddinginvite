@@ -74,3 +74,7 @@ header,main>header,.month-card,.events .map-button,.map-button,.music{backdrop-f
 .opening .photographic .gate{transition-duration:3s!important}
 .opening .photographic .gate-frame{transition:transform 3.4s ease .2s,opacity 1.8s ease 1.9s!important}
 .opening .photographic .ceremony{transition-duration:4.2s!important}
+/* Soft cross-fade from the entrance scene to the invitation — no hard cut.
+   The intro lifts above the page and its opacity eases to 0, revealing the
+   invitation underneath. */
+.intro.fade-out{position:fixed;inset:0;z-index:60;opacity:0;transition:opacity .9s ease}

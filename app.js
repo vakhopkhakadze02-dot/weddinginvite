@@ -106,11 +106,29 @@ function syncVideo() {
   else heroVideo.pause();
 }
 function finish() {
+  const intro = $('#intro');
+  if (intro.hidden) return;                     // already handed off
   generation++; opening = false; clearIntroTimers(); entranceVideo.pause();
-  $('#intro').hidden = true; $('#main').hidden = false;
+  $('#main').hidden = false;
   document.body.classList.remove('locked'); $('#skip').hidden = true;
-  window.scrollTo(0, 0); syncVideo();
-  $('#home').setAttribute('tabindex', '-1'); $('#home').focus({preventScroll:true});
+  window.scrollTo(0, 0);
+  const done = () => {
+    intro.hidden = true;
+    intro.classList.remove('fade-out');
+    syncVideo();
+    $('#home').setAttribute('tabindex', '-1'); $('#home').focus({preventScroll:true});
+  };
+  if (reduced) { done(); return; }
+  syncVideo();                                  // let the hero video take over behind the fade
+  // Cross-fade the entrance scene out over the invitation instead of a hard cut.
+  requestAnimationFrame(() => intro.classList.add('fade-out'));
+  let handled = false;
+  const onEnd = e => {
+    if (handled || (e && e.target !== intro)) return;
+    handled = true; intro.removeEventListener('transitionend', onEnd); done();
+  };
+  intro.addEventListener('transitionend', onEnd);
+  setTimeout(onEnd, 1200);                       // fallback if transitionend never fires
 }
 $('#open').onclick = () => {
   if ($('#open').disabled) return;
