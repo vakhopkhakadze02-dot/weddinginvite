@@ -65,16 +65,7 @@ header,main>header,.month-card,.events .map-button,.map-button,.music{backdrop-f
 /* 3. Lighten the full-screen intro backdrop blur on larger screens (it is
       already removed under 700px and is mostly hidden behind the gate). */
 @media(min-width:701px){.intro:before{filter:blur(10px)}}
-/* 4. Phones only. The 3D door-swing animates clip-path + rotateY together,
-      which mobile GPUs re-rasterise every frame — the real cause of the
-      remaining stutter on a phone. Drop the swing and let the whole gate
-      frame scale up and fade out to reveal the scene (compositor-only:
-      2D transform + opacity). Also stop the perpetual vine sway. */
-@media(max-width:700px){
-  .opening .photographic .left,
-  .opening .photographic .right{transform:none!important;filter:none!important}
-  .photographic .left,.photographic .right{will-change:auto;transition:none}
-  .opening .photographic .gate-frame{transform:scale(1.5);opacity:0;transition:transform 2.4s ease 1.4s,opacity 1.8s ease 1.8s}
-  .opening .photographic .ceremony{transform:scale(1.1);transition:transform 4s ease}
-  .vine-leaves{animation:none}
-}
+/* 4. The full 3D door-swing runs on phones too — its old lag came from the
+      HEVC video and load stalls, both fixed now. Keep only the cheap wins on
+      phones: stop the perpetual vine sway. */
+@media(max-width:700px){.vine-leaves{animation:none}}
