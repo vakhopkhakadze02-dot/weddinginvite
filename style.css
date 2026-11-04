@@ -33,3 +33,20 @@ main>header{background:linear-gradient(110deg,#e8d7bded,#ddc5a3e8 60%,#ead9c0ed)
 
 /* Floral gate opening directly onto the walking video */
 .intro:before{background:linear-gradient(#692b3930,#4a202b55),url('floral-gate.png') center/cover}.scene.photographic{width:min(100vw,57.5svh)}.photo-surround,.photographic .gate{background-image:url('floral-gate.png')}.photo-surround{clip-path:polygon(evenodd,0% 0%,100% 0%,100% 100%,0% 100%,0% 0%,50% 12%,40% 13%,30% 16%,23% 22%,19% 29%,18.5% 79%,81.5% 79%,81% 29%,77% 22%,70% 16%,60% 13%,50% 12%)}.photographic .left{clip-path:polygon(50% 12%,40% 13%,30% 16%,23% 22%,19% 29%,18.5% 79%,50% 79%);transform-origin:18.5% 48%}.photographic .right{clip-path:polygon(50% 12%,60% 13%,70% 16%,77% 22%,81% 29%,81.5% 79%,50% 79%);transform-origin:81.5% 48%}.photographic .ceremony{background:#39271e}.photographic .ceremony video{display:block;width:100%;height:100%;object-fit:cover;object-position:center}.opening .photographic .gate-frame{transition:transform 4.5s ease 1.7s,opacity 2s ease 3s;transform:scale(1.55)}.opening .photographic .ceremony{transform:scale(1.12);transition:transform 7.5s ease}.opening .photographic .left{transform:rotateY(-100deg)}.opening .photographic .right{transform:rotateY(100deg)}@media(max-width:650px){.scene.photographic{width:100vw}}
+
+/* Keep the gate animation on the compositor; avoid animated image filters. */
+.photographic .gate{transition:transform 3.8s cubic-bezier(.32,.05,.2,1)}
+.opening .photographic .gate{filter:none}
+.skip{right:110px}
+@media(max-width:700px){
+  .intro:before{filter:none;inset:0;background:linear-gradient(135deg,#6f3543,#30221e)}
+  header,.month-card,.calendar,.map-button,.music{backdrop-filter:none}
+  .vine{animation:none}
+  .skip{right:72px;max-width:calc(100% - 90px)}
+}
+@media(max-width:700px){
+  .vine-border{animation:none;overflow:hidden;max-width:100%;pointer-events:none}
+  .vine-border-right{right:0}
+}
+main{overflow-x:clip}
+.vine-border svg{overflow:hidden}
