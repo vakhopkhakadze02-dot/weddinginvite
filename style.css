@@ -104,6 +104,32 @@ header,main>header,.month-card,.events .map-button,.map-button,.music{backdrop-f
 .petal{position:absolute;top:-8%;background:radial-gradient(circle at 32% 28%,#f7d6df,#e2a3b6);border-radius:72% 8% 72% 8%;opacity:0;will-change:transform,opacity;animation:petal-fall linear infinite}
 @keyframes petal-fall{0%{transform:translate3d(0,-10vh,0) rotate(0);opacity:0}12%{opacity:.5}88%{opacity:.5}100%{transform:translate3d(28px,112vh,0) rotate(460deg);opacity:0}}
 @media(prefers-reduced-motion:reduce){.petals{display:none}.has-reveal .reveal{opacity:1;transform:none;transition:none}}
+/* ---- RSVP: custom form styled to the invitation, posts to Google Forms ---- */
+.rsvp{padding:72px 7% 84px;text-align:center;background:radial-gradient(ellipse at 18% 8%,#fff5f0,transparent 55%),linear-gradient(160deg,#f4e0dc,#ecd0d6);position:relative}
+.rsvp>h2{font-size:38px}
+.rsvp-sub{font-size:13px;line-height:1.9;color:#8c5a63;margin:12px auto 0;max-width:360px;font-family:'Noto Sans Georgian',sans-serif}
+.rsvp-form,.rsvp-done{max-width:440px;margin:34px auto 0;background:linear-gradient(160deg,#fffaf4,#fdeee9);border:1px solid #e6cdbf;border-radius:26px;padding:30px 26px;box-shadow:0 22px 55px #6e203a1a,inset 0 0 0 1px #fff8f2;text-align:left}
+.rsvp-field{display:block;margin-bottom:20px}
+.rsvp-field>span{display:block;font-size:12px;letter-spacing:1px;color:#8c5a63;margin-bottom:9px;font-family:'Noto Sans Georgian',sans-serif}
+.rsvp-form input,.rsvp-form select{width:100%;padding:14px 15px;border:1px solid #dcc0b4;border-radius:12px;background:#fffdfa;font-family:'Noto Sans Georgian',sans-serif;font-size:15px;color:#5b3b43}
+.rsvp-form input::placeholder{color:#c3a9a0}
+.rsvp-form input:focus,.rsvp-form select:focus{outline:none;border-color:#9c3157;box-shadow:0 0 0 3px #9c315722}
+.rsvp-choice{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rsvp-opt{padding:14px 10px;border:1px solid #dcc0b4;border-radius:12px;background:#fffdfa;color:#7a4a53;font-family:'Noto Sans Georgian',sans-serif;font-size:13px;line-height:1.3;transition:background .2s,color .2s,border-color .2s,box-shadow .2s}
+.rsvp-opt[aria-pressed=true]{background:#9c3157;color:#fff3df;border-color:#9c3157;box-shadow:0 6px 16px #9c315733}
+.rsvp-submit{width:100%;margin-top:4px;padding:16px;border:0;border-radius:12px;background:linear-gradient(110deg,#9c3157,#7a2342);color:#fff3df;font-family:'Noto Sans Georgian',sans-serif;font-size:14px;letter-spacing:1px;box-shadow:0 10px 24px #7a234233;transition:transform .2s,box-shadow .2s,opacity .2s}
+.rsvp-submit span{margin-left:8px}
+.rsvp-submit:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 14px 30px #7a234244}
+.rsvp-submit:disabled{opacity:.55;cursor:default}
+.rsvp-msg{margin:14px 0 0;font-size:12px;line-height:1.6;color:#b23a4a;text-align:center;font-family:'Noto Sans Georgian',sans-serif}
+.rsvp-msg:empty{margin:0}
+.rsvp-done{text-align:center;animation:rsvp-pop .5s cubic-bezier(.2,.8,.2,1)}
+.rsvp-done-mark{width:62px;height:62px;margin:0 auto 16px;border-radius:50%;background:#9c3157;color:#fff3df;font-size:30px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px #9c315740}
+.rsvp-done h3{font-size:24px;color:#8c2a4c;margin:0 0 10px}
+.rsvp-done p{font-size:13px;line-height:1.9;color:#8c5a63;margin:0;font-family:'Noto Sans Georgian',sans-serif}
+@keyframes rsvp-pop{from{opacity:0;transform:scale(.95) translateY(12px)}to{opacity:1;transform:none}}
+@media(max-width:650px){.rsvp{padding:54px 6% 64px}.rsvp>h2{font-size:28px}.rsvp-form,.rsvp-done{padding:24px 18px;border-radius:20px}}
+@media(prefers-reduced-motion:reduce){.rsvp-done{animation:none}}
 /* Soft cross-fade from the entrance scene to the invitation — no hard cut.
    The intro lifts above the page and its opacity eases to 0, revealing the
    invitation underneath. */

@@ -266,3 +266,53 @@ dialog.onclick = event => { if (event.target === dialog) dialog.close(); };
   }
   document.body.appendChild(layer);
 })();
+
+// ---- RSVP: a custom form that posts to the couple's Google Form ----
+(function () {
+  const form = document.getElementById('rsvp-form');
+  if (!form) return;
+  const FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSc7llQy1hmF_0xox08SXYec3NMpu4pi6crMjUR7QCnVIIvuzw/formResponse';
+  const ENTRY = { name: 'entry.559352220', attend: 'entry.877086558', persons: 'entry.924523986' };
+  const YES = 'სიამოვნებით მოვალ';
+  const nameI = document.getElementById('rsvp-name');
+  const opts = [...form.querySelectorAll('.rsvp-opt')];
+  const personsWrap = form.querySelector('.rsvp-persons');
+  const personsSel = document.getElementById('rsvp-persons');
+  const msg = form.querySelector('.rsvp-msg');
+  const submit = form.querySelector('.rsvp-submit');
+  const doneBox = document.querySelector('.rsvp-done');
+  let attend = '';
+
+  opts.forEach(b => b.addEventListener('click', () => {
+    attend = b.dataset.attend;
+    opts.forEach(o => o.setAttribute('aria-pressed', String(o === b)));
+    personsWrap.hidden = (attend !== YES);
+    msg.textContent = '';
+  }));
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = nameI.value.trim();
+    if (!name) { msg.textContent = 'გთხოვთ, შეიყვანოთ სახელი და გვარი.'; nameI.focus(); return; }
+    if (!attend) { msg.textContent = 'გთხოვთ, აირჩიოთ — მობრძანდებით თუ არა.'; return; }
+    const fd = new FormData();
+    fd.append(ENTRY.name, name);
+    fd.append(ENTRY.attend, attend);
+    if (attend === YES) fd.append(ENTRY.persons, personsSel.value);
+    submit.disabled = true; msg.textContent = '';
+    submit.textContent = 'იგზავნება…';
+    try {
+      await fetch(FORM_ACTION, { method: 'POST', mode: 'no-cors', body: fd });
+      const coming = attend === YES;
+      doneBox.querySelector('h3').textContent = coming ? 'გმადლობთ! გელოდებით 💛' : 'გმადლობთ, რომ გვაცნობეთ';
+      doneBox.querySelector('p').textContent = coming
+        ? 'თქვენი დადასტურება მივიღეთ. შევხვდებით 14 ნოემბერს!'
+        : 'ვწუხვართ, რომ ვერ შემოგვიერთდებით — მადლობა პასუხისთვის.';
+      form.hidden = true; doneBox.hidden = false;
+      doneBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (err) {
+      submit.disabled = false; submit.innerHTML = 'გაგზავნა <span>→</span>';
+      msg.textContent = 'ვერ გაიგზავნა. შეამოწმეთ ინტერნეტი და სცადეთ ხელახლა.';
+    }
+  });
+})();
