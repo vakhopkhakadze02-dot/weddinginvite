@@ -1,0 +1,13 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Shota Keti//Wedding//KA
+BEGIN:VEVENT
+UID:shota-keti-20261114@wedding.local
+DTSTAMP:20261104T110000Z
+DTSTART:20261114T090000Z
+DTEND:20261114T190000Z
+SUMMARY:შოთასა და ქეთის ქორწილი
+LOCATION:ოზურგეთი / ბათუმი
+DESCRIPTION:13:00 ჯვრისწერა — ოზურგეთის საკათედრო ტაძარი\n14:00 ხელმოწერა — ოზურგეთის ქორწინების სახლი\n18:00 ვახშამი — ბათუმი კრისტალ ჰოლი
+END:VEVENT
+END:VCALENDAR
