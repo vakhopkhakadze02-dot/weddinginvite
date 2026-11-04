@@ -1,3 +1,94 @@
+// ---- Preloader: fill 0→100% by real bytes loaded, then reveal the intro ----
+(function () {
+  const pre = document.getElementById('preloader');
+  if (!pre) return;
+  const prog = pre.querySelector('.pl-prog');
+  const pctEl = pre.querySelector('.pl-pct');
+  const CIRC = 339.292; // 2π·54
+  const startedAt = performance.now();
+  let shown = 0, finished = false;
+
+  function render(p) {
+    p = Math.max(0, Math.min(1, p));
+    prog.style.strokeDashoffset = CIRC * (1 - p);
+    const pct = Math.round(p * 100);
+    pctEl.textContent = pct + '%';
+    pre.setAttribute('aria-valuenow', String(pct));
+  }
+  function reveal() {
+    if (finished) return;
+    finished = true;
+    render(1);
+    const wait = Math.max(0, 550 - (performance.now() - startedAt)); // let 100% be seen
+    setTimeout(() => {
+      pre.classList.add('pl-done');
+      setTimeout(() => pre.remove(), 800);
+    }, wait);
+  }
+
+  const assets = [
+    'wedding-video.mp4', 'wedding-music.m4a',
+    'floral-gate.jpg', 'open-aisle.jpg', 'palace-gate.jpg',
+    'garden-ceremony.jpg', 'church.jpg', 'signing-arch.jpg',
+    'table.jpg', 'monogram.jpg'
+  ];
+  // Hard safety net: never trap the guest if the network misbehaves.
+  const safety = setTimeout(reveal, 20000);
+
+  // Old browsers without streaming fetch: approximate, then reveal on window load.
+  if (!('fetch' in window) || !('ReadableStream' in window)) {
+    let f = 0;
+    const iv = setInterval(() => { f = Math.min(0.92, f + 0.03); render(f); }, 120);
+    window.addEventListener('load', () => { clearInterval(iv); clearTimeout(safety); reveal(); });
+    return;
+  }
+
+  const loaded = new Array(assets.length).fill(0);
+  const sizes = new Array(assets.length).fill(0);
+  const blobs = {};
+
+  function update() {
+    const totLoaded = loaded.reduce((a, b) => a + b, 0);
+    const totSize = sizes.reduce((a, b) => a + b, 0);
+    let p = totSize > 0 ? totLoaded / Math.max(totSize, totLoaded) : 0;
+    p = Math.min(p, 0.985);            // reach 100% only when everything is truly ready
+    if (p > shown) { shown = p; render(shown); } // monotonic — never goes backwards
+  }
+
+  Promise.all(assets.map((url, i) =>
+    fetch(url).then(res => {
+      sizes[i] = +res.headers.get('content-length') || 0;
+      if (!res.body || !res.body.getReader) {
+        return res.blob().then(b => { blobs[url] = b; loaded[i] = b.size; if (!sizes[i]) sizes[i] = b.size; update(); });
+      }
+      const reader = res.body.getReader();
+      const chunks = [];
+      return (function pump() {
+        return reader.read().then(({ done, value }) => {
+          if (done) { blobs[url] = new Blob(chunks); if (!sizes[i]) sizes[i] = loaded[i]; update(); return; }
+          chunks.push(value); loaded[i] += value.length; update(); return pump();
+        });
+      })();
+    }).catch(() => { sizes[i] = sizes[i] || 1; loaded[i] = sizes[i]; update(); })
+  )).then(() => {
+    clearTimeout(safety);
+    // Serve the heavy media straight from memory so the first play never stalls.
+    try {
+      const vBlob = blobs['wedding-video.mp4'];
+      if (vBlob) {
+        const vUrl = URL.createObjectURL(vBlob);
+        ['#entrance-video', '#hero-video'].forEach(sel => {
+          const v = document.querySelector(sel);
+          if (v) { v.src = vUrl; v.load(); }
+        });
+      }
+      const aBlob = blobs['wedding-music.m4a'];
+      if (aBlob) { const a = document.getElementById('wedding-audio'); if (a) a.src = URL.createObjectURL(aBlob); }
+    } catch (e) {}
+    reveal();
+  });
+})();
+
 const $ = selector => document.querySelector(selector);
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const entranceVideo = $('#entrance-video');
