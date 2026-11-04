@@ -211,3 +211,58 @@ document.querySelectorAll('[data-photo]').forEach(button => button.onclick = () 
 });
 $('#close-photo').onclick = () => dialog.close();
 dialog.onclick = event => { if (event.target === dialog) dialog.close(); };
+
+// ---- Scroll reveal + journey-map route draw ----
+(function () {
+  if (reduced) return;                       // reduced-motion: leave everything visible & static
+  document.documentElement.classList.add('has-reveal');
+
+  // Prepare the journey route so it can "draw" itself when it scrolls into view.
+  const route = document.querySelector('.jm-route');
+  if (route) {
+    try { const L = route.getTotalLength(); route.style.strokeDasharray = L; route.style.strokeDashoffset = L; } catch (e) {}
+    route.parentNode && route.closest('.journey') && (route.closest('.journey').dataset.draw = '1');
+  }
+
+  const toReveal = [];
+  // Staggered groups
+  [['.events article', 0.12], ['.photos button', 0.12]].forEach(([sel, step]) => {
+    document.querySelectorAll(sel).forEach((el, i) => { el.classList.add('reveal'); el.style.transitionDelay = (i * step) + 's'; toReveal.push(el); });
+  });
+  // Single blocks
+  ['.journey', '.count-section .month-card', '.count-section .countdown', '.gallery > div', '.schedule > h2', '.schedule > .eyebrow']
+    .forEach(sel => document.querySelectorAll(sel).forEach(el => { el.classList.add('reveal'); toReveal.push(el); }));
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      el.classList.add('in');
+      if (el.classList.contains('journey')) { const r = el.querySelector('.jm-route'); if (r) r.style.strokeDashoffset = '0'; }
+      io.unobserve(el);
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -6% 0px' });
+  toReveal.forEach(el => io.observe(el));
+})();
+
+// ---- Ambient falling petals (subtle, palette-matched) ----
+(function () {
+  if (reduced) return;
+  const layer = document.createElement('div');
+  layer.className = 'petals';
+  layer.setAttribute('aria-hidden', 'true');
+  const count = window.matchMedia('(max-width:650px)').matches ? 7 : 11;
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('span');
+    p.className = 'petal';
+    const size = 9 + Math.random() * 10;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.left = (Math.random() * 100) + 'vw';
+    p.style.animationDuration = (12 + Math.random() * 12) + 's';
+    p.style.animationDelay = (-Math.random() * 18) + 's';
+    p.style.opacity = '';
+    layer.appendChild(p);
+  }
+  document.body.appendChild(layer);
+})();

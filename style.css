@@ -74,6 +74,36 @@ header,main>header,.month-card,.events .map-button,.map-button,.music{backdrop-f
 .opening .photographic .gate{transition-duration:3s!important}
 .opening .photographic .gate-frame{transition:transform 3.4s ease .2s,opacity 1.8s ease 1.9s!important}
 .opening .photographic .ceremony{transition-duration:4.2s!important}
+/* ---- Journey map: the day's schedule as an illustrated, animated route ---- */
+.journey{max-width:860px;margin:6px auto 46px;background:linear-gradient(160deg,#fff8ef,#f3e7d4);border:1px solid #e0cdac;border-radius:28px;padding:20px 20px 10px;box-shadow:0 22px 55px #4a2a1a1a,inset 0 0 0 1px #fff6e6;position:relative;overflow:hidden}
+.journey-map{width:100%;height:auto;display:block}
+.jm-terrain path{fill:none;stroke:#cdb188;stroke-width:1.2;opacity:.3}
+.jm-route{fill:none;stroke:#b1863f;stroke-width:3.4;stroke-linecap:round}
+.journey.in .jm-route{transition:stroke-dashoffset 2s cubic-bezier(.4,.1,.2,1) .25s}
+.jm-city{fill:#8a5a2f;font-family:'Noto Serif Georgian',Georgia,serif;font-size:31px;letter-spacing:1px;opacity:0;transition:opacity 1s ease .55s}
+.journey.in .jm-city{opacity:.92}
+.jm-compass{opacity:.5}
+.jm-comp-ring{fill:none;stroke:#b1863f;stroke-width:2}
+.jm-comp-needle{fill:#9c3157}
+.jm-comp-n{fill:#8a5a2f;font-size:19px;font-family:'Noto Serif Georgian',Georgia,serif}
+.jm-pin{cursor:pointer;opacity:0;transition:opacity .5s ease}
+.journey.in .jm-pin{opacity:1;transition-delay:var(--d)}
+.jm-drop{fill:#9c3157;stroke:#fff3df;stroke-width:2}
+.jm-dot{fill:#fff3df}
+.jm-num{fill:#7a1f3a;font-family:Georgia,serif;font-size:14px;font-weight:700}
+.jm-hit{fill:transparent}
+.jm-pin:hover .jm-drop,.jm-pin:focus-visible .jm-drop{fill:#7e2545}
+.jm-pin:hover .jm-drop{filter:drop-shadow(0 4px 7px #7a1f3a55)}
+.journey-note{text-align:center;font-family:'Noto Sans Georgian',sans-serif;font-size:11px;letter-spacing:1px;color:#9a7a57;margin:4px 0 8px}
+@media(max-width:650px){.journey{padding:14px 12px 6px;border-radius:20px}.jm-city{font-size:34px}.journey-note{font-size:10px}}
+/* ---- Scroll reveal: sections rise & fade in as they enter view ---- */
+.has-reveal .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+.has-reveal .reveal.in{opacity:1;transform:none}
+/* ---- Falling petals: a soft, ambient drift in the couple's palette ---- */
+.petals{position:fixed;inset:0;pointer-events:none;z-index:4;overflow:hidden}
+.petal{position:absolute;top:-8%;background:radial-gradient(circle at 32% 28%,#f7d6df,#e2a3b6);border-radius:72% 8% 72% 8%;opacity:0;will-change:transform,opacity;animation:petal-fall linear infinite}
+@keyframes petal-fall{0%{transform:translate3d(0,-10vh,0) rotate(0);opacity:0}12%{opacity:.5}88%{opacity:.5}100%{transform:translate3d(28px,112vh,0) rotate(460deg);opacity:0}}
+@media(prefers-reduced-motion:reduce){.petals{display:none}.has-reveal .reveal{opacity:1;transform:none;transition:none}}
 /* Soft cross-fade from the entrance scene to the invitation — no hard cut.
    The intro lifts above the page and its opacity eases to 0, revealing the
    invitation underneath. */
