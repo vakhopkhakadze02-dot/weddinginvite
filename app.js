@@ -159,7 +159,8 @@ entranceVideo.addEventListener('ended', () => {
   if (opening && !$('#intro').hidden) finish();
 });
 $('#skip').onclick = finish;
-$('#replay').onclick = () => {
+const replayBtn = $('#replay');
+if (replayBtn) replayBtn.onclick = () => {
   generation++; opening = false; clearIntroTimers();
   entranceVideo.pause(); heroVideo.pause();
   if (entranceVideo.readyState) entranceVideo.currentTime = 0;
