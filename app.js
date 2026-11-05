@@ -212,37 +212,43 @@ document.querySelectorAll('[data-photo]').forEach(button => button.onclick = () 
 $('#close-photo').onclick = () => dialog.close();
 dialog.onclick = event => { if (event.target === dialog) dialog.close(); };
 
-// ---- Scroll reveal + journey-map route draw ----
+// ---- Scroll reveal: blocks rise & fade in as they enter view ----
 (function () {
   if (reduced) return;                       // reduced-motion: leave everything visible & static
   document.documentElement.classList.add('has-reveal');
 
-  // Prepare the journey route so it can "draw" itself when it scrolls into view.
-  const route = document.querySelector('.jm-route');
-  if (route) {
-    try { const L = route.getTotalLength(); route.style.strokeDasharray = L; route.style.strokeDashoffset = L; } catch (e) {}
-    route.parentNode && route.closest('.journey') && (route.closest('.journey').dataset.draw = '1');
-  }
-
-  const toReveal = [];
-  // Staggered groups
+  // Tag the blocks that should animate in, with a little stagger per group.
   [['.events article', 0.12], ['.photos button', 0.12]].forEach(([sel, step]) => {
-    document.querySelectorAll(sel).forEach((el, i) => { el.classList.add('reveal'); el.style.transitionDelay = (i * step) + 's'; toReveal.push(el); });
+    document.querySelectorAll(sel).forEach((el, i) => { el.classList.add('reveal'); el.style.transitionDelay = (i * step) + 's'; });
   });
-  // Single blocks
-  ['.journey', '.count-section .month-card', '.count-section .countdown', '.gallery > div', '.schedule > h2', '.schedule > .eyebrow']
-    .forEach(sel => document.querySelectorAll(sel).forEach(el => { el.classList.add('reveal'); toReveal.push(el); }));
+  ['.count-section .month-card', '.count-section .countdown', '.gallery > div', '.schedule > h2', '.schedule > .eyebrow']
+    .forEach(sel => document.querySelectorAll(sel).forEach(el => el.classList.add('reveal')));
 
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (!e.isIntersecting) return;
-      const el = e.target;
-      el.classList.add('in');
-      if (el.classList.contains('journey')) { const r = el.querySelector('.jm-route'); if (r) r.style.strokeDashoffset = '0'; }
-      io.unobserve(el);
+  // Every .reveal element, including .journey and #rsvp declared in the HTML.
+  const items = [...document.querySelectorAll('.reveal')];
+  const reveal = el => el.classList.add('in');
+
+  const io = ('IntersectionObserver' in window) ? new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' }) : null;
+  if (io) items.forEach(el => io.observe(el));
+
+  // Fallback sweep — a block is never left hidden even if the observer misses it.
+  let ticking = false;
+  function sweep() {
+    const vh = innerHeight;
+    let remaining = false;
+    items.forEach(el => {
+      if (el.classList.contains('in')) return;
+      const r = el.getBoundingClientRect();
+      if (r.bottom > 0 && r.top < vh * 0.92) reveal(el); else remaining = true;
     });
-  }, { threshold: 0.15, rootMargin: '0px 0px -6% 0px' });
-  toReveal.forEach(el => io.observe(el));
+    if (!remaining) { removeEventListener('scroll', onScroll); removeEventListener('resize', onScroll); }
+  }
+  function onScroll() { if (ticking) return; ticking = true; requestAnimationFrame(() => { ticking = false; sweep(); }); }
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll);
+  sweep();
 })();
 
 // ---- Ambient falling petals (subtle, palette-matched) ----
