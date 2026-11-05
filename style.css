@@ -131,6 +131,21 @@ header,main>header,.month-card,.events .map-button,.map-button,.music{backdrop-f
 @keyframes rsvp-pop{from{opacity:0;transform:scale(.95) translateY(12px)}to{opacity:1;transform:none}}
 @media(max-width:650px){.rsvp{padding:54px 6% 64px}.rsvp>h2{font-size:28px}.rsvp-form,.rsvp-done{padding:24px 18px;border-radius:20px}}
 @media(prefers-reduced-motion:reduce){.rsvp-done{animation:none}}
+/* ---- Hero: richer, balanced invitation card (fills desktop whitespace) ---- */
+.hero-copy{background:linear-gradient(160deg,#fffdf7d9,#fdf1eaa6);border:1px solid #e9d2c4;box-shadow:0 20px 55px #7a234216,inset 0 0 0 1px #fff9f3;padding:42px 30px 46px;max-width:470px;margin-left:auto;margin-right:auto}
+.hero-crest{display:block;width:78px;height:78px;margin:0 auto 16px;border-radius:50%;object-fit:contain;background:#fff8f0;border:1px solid #e3c49a;box-shadow:0 8px 20px #7a234218;padding:9px}
+.hero-flourish{width:210px;max-width:72%;margin:16px auto 18px}
+.hero-flourish svg{display:block;width:100%;height:auto;overflow:visible}
+.hero-flourish .vine-stem{stroke:#c49a63;stroke-width:1.6}
+.hero-place{font-size:12px!important;letter-spacing:3px;color:#a9657b;margin:7px 0 18px!important;font-family:'Noto Sans Georgian',sans-serif;line-height:1.6!important}
+@media(max-width:650px){.hero-copy{max-width:460px;padding:30px 20px 34px}.hero-crest{width:66px;height:66px;margin-bottom:12px}.hero-flourish{margin:12px auto 14px}}
+/* ---- Calendar: wedding-day label + soft floral corners ---- */
+.month-card{position:relative}
+.wd-label{position:absolute;bottom:3px;left:50%;transform:translateX(-50%);font-size:7.5px;letter-spacing:.4px;color:#9c3157;white-space:nowrap;font-family:'Noto Sans Georgian',sans-serif;z-index:2}
+.mc-leaf{position:absolute;width:46px;height:46px;opacity:.4;pointer-events:none;overflow:visible}
+.mc-leaf-tl{top:7px;left:7px}
+.mc-leaf-br{bottom:7px;right:7px}
+@media(max-width:650px){.wd-label{display:none}.mc-leaf{width:34px;height:34px;opacity:.32}}
 /* Soft cross-fade from the entrance scene to the invitation — no hard cut.
    The intro lifts above the page and its opacity eases to 0, revealing the
    invitation underneath. */
