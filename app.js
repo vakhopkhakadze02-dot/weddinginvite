@@ -108,6 +108,7 @@ function finish() {
     intro.hidden = true;
     intro.classList.remove('fade-out');
     syncVideo();
+    if (window.__armScrollHint) window.__armScrollHint();
     $('#home').setAttribute('tabindex', '-1'); $('#home').focus({preventScroll:true});
   };
   if (reduced) { done(); return; }
@@ -338,4 +339,22 @@ dialog.onclick = event => { if (event.target === dialog) dialog.close(); };
     setTimeout(showDone, 1600);                 // fallback if the iframe load doesn't fire
     setTimeout(() => gform.remove(), 2200);
   });
+})();
+
+// ---- Scroll-down hint: pops up on the invitation, fades once you scroll ----
+(function () {
+  const hint = document.getElementById('scroll-hint');
+  if (!hint) return;
+  let dismissed = false, armed = false;
+  function dismiss() {
+    if (dismissed) return; dismissed = true;
+    hint.classList.remove('show');
+    window.removeEventListener('scroll', onScroll);
+  }
+  function onScroll() { if (window.scrollY > 40) dismiss(); }
+  window.__armScrollHint = function () {
+    if (armed || dismissed) return; armed = true;
+    setTimeout(() => { if (!dismissed && window.scrollY < 40) hint.classList.add('show'); }, 1100);
+    window.addEventListener('scroll', onScroll, { passive: true });
+  };
 })();
