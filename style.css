@@ -33,7 +33,7 @@ main>header{background:linear-gradient(110deg,#e8d7bded,#ddc5a3e8 60%,#ead9c0ed)
 .credit:hover{opacity:1;color:#f3e3c6}
 .credit:hover strong{color:#f6d9a6}
 /* ---- Header in the footer's deep burgundy ---- */
-main>header{background:linear-gradient(145deg,#9c3157,#64203e);border-bottom:1px solid #8a2a4acc;box-shadow:0 5px 22px #43122a30}
+main>header{background:linear-gradient(145deg,#5f1e39,#3f1225);border-bottom:1px solid #6e2340;box-shadow:0 6px 22px #2a0c1942}
 main>header nav a{color:#f3dce1;text-shadow:none;font-weight:400}
 main>header nav a:hover{color:#f8cada}
 main>header .brand{width:46px;height:46px;background:#fff7ef;border:1px solid #e3c49a;border-radius:50%;padding:5px;box-shadow:0 4px 12px #35102036}
